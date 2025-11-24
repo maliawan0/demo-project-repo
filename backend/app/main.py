@@ -27,6 +27,11 @@ app.include_router(analyses.router, prefix="/api/v1/analyses", tags=["analyses"]
 app.include_router(users.router, prefix="/api/v1/users", tags=["users"])
 
 
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the API"}
+
+
 @app.get("/healthz")
 def health_check():
     try:
