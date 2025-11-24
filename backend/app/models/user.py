@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field, validator
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from datetime import datetime
 from typing import Optional
 from bson import ObjectId
@@ -10,7 +10,8 @@ class User(BaseModel):
     hashed_password: str
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
-    @validator("id", pre=True, always=True)
+    @classmethod
+    @field_validator("id", mode="before")
     def convert_objectid_to_str(cls, v):
         if isinstance(v, ObjectId):
             return str(v)
