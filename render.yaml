@@ -12,7 +12,7 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: CORS_ORIGINS
-        value: "https://demo-project-repo.onrender.com"
+        value: "https://demo-project-repo.onrender.com,*"
   - type: web
     name: frontend
     env: static
@@ -21,7 +21,7 @@ services:
     routes:
       - type: rewrite
         source: /api/:path*
-        destination: "https://demo-project-repo-backend.onrender.com/api/:path*"
+        destination: "https://demo-project-repo-backend.onrender.com/:path*"
     envVars:
       - key: VITE_API_URL
         value: "https://demo-project-repo-backend.onrender.com"
