@@ -9,12 +9,6 @@ export default defineConfig(({ mode }) => {
     server: {
       host: "::",
       port: 5137,
-      proxy: {
-        "/api": {
-          target: env.VITE_API_URL,
-          changeOrigin: true,
-        },
-      },
     },
   plugins: [dyadComponentTagger(), react()],
   resolve: {

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { showSuccess, showError } from '@/utils/toast';
+import { apiUrl } from '@/lib/api';
 
 interface MockUser {
   id: string;
@@ -26,7 +27,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (token) {
       const fetchUser = async () => {
         try {
-          const userResponse = await fetch('/api/v1/users/me', {
+          const userResponse = await fetch(apiUrl('/v1/users/me'), {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -52,7 +53,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       formData.append('username', email);
       formData.append('password', password);
 
-      const response = await fetch('/api/v1/auth/login', {
+      const response = await fetch(apiUrl('/v1/auth/login'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -62,7 +63,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.access_token);
-        const userResponse = await fetch('/api/v1/users/me', {
+        const userResponse = await fetch(apiUrl('/v1/users/me'), {
           headers: {
             Authorization: `Bearer ${data.access_token}`,
           },
@@ -88,7 +89,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const register = async (username: string, email: string, password: string) => {
     try {
-      const response = await fetch('/api/v1/auth/signup', {
+      const response = await fetch(apiUrl('/v1/auth/signup'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -99,7 +100,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.access_token);
-        const userResponse = await fetch('/api/v1/users/me', {
+        const userResponse = await fetch(apiUrl('/v1/users/me'), {
           headers: {
             Authorization: `Bearer ${data.access_token}`,
           },
