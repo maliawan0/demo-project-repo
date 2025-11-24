@@ -2,8 +2,8 @@ services:
   - type: web
     name: backend
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    buildCommand: "cd backend && pip install -r requirements.txt"
+    startCommand: "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
     envVars:
       - key: MONGODB_URI
         fromDatabase:
@@ -12,22 +12,16 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: CORS_ORIGINS
-        value: "http://localhost:5173,https://demo-project-repo-backend.onrender.com"
-    buildFilter:
-      paths:
-        - backend/**
+        value: "https://demo-project-repo.onrender.com"
   - type: web
     name: frontend
     env: static
-    buildCommand: npm install && npm run build
-    staticPublishPath: ./dist
+    buildCommand: "cd frontend && npm install && npm run build"
+    staticPublishPath: "./frontend/dist"
     routes:
       - type: rewrite
-        source: /api/*
-        destination: "https://demo-project-repo.onrender.com/api/*"
+        source: /api/:path*
+        destination: "https://demo-project-repo-backend.onrender.com/api/:path*"
     envVars:
       - key: VITE_API_URL
-        value: "https://demo-project-repo.onrender.com"
-    buildFilter:
-      paths:
-        - frontend/**
+        value: "https://demo-project-repo-backend.onrender.com"
