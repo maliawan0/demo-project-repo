@@ -6,7 +6,7 @@ from app.routers import auth, analyses, users
 import os
 
 # Load .env variables
-load_dotenv()
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 app = FastAPI()
 

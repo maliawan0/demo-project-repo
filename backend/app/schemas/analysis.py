@@ -15,9 +15,8 @@ class PyObjectId(ObjectId):
         return ObjectId(v)
 
     @classmethod
-    @classmethod
-    def __get_pydantic_json_schema__(cls, field_schema):
-        field_schema.update(type="string")
+    def __get_pydantic_json_schema__(cls, core_schema, handler):
+        return {"type": "string"}
 
 class AnalysisCreate(BaseModel):
     name: str
@@ -25,10 +24,10 @@ class AnalysisCreate(BaseModel):
     accepted_suggestions: List[Dict[str, Any]] = Field(alias="acceptedSuggestions")
 
     class Config:
-        allow_population_by_field_name = True
+        populate_by_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "name": "My First Analysis",
                 "formData": {
@@ -56,6 +55,6 @@ class AnalysisOut(BaseModel):
     timestamp: datetime
 
     class Config:
-        allow_population_by_field_name = True
+        populate_by_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}

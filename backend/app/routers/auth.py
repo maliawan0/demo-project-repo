@@ -11,7 +11,7 @@ from app.schemas.user import UserCreate, UserResponse, Token
 
 router = APIRouter()
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 
 from app.auth import get_current_user
@@ -50,4 +50,3 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Database =
         )
     access_token = auth.create_access_token(data={"sub": user["email"]})
     return {"access_token": access_token, "token_type": "bearer"}
-
